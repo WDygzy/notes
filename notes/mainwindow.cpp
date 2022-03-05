@@ -236,7 +236,7 @@ void MainWindow::changeReturnIcon()
 void MainWindow::getShowText()
 {
     //获取文本内容
-    QFile getFilename("content.txt");
+    QFile getFilename(appCurrentFilePath + "/content.txt");
     if (!getFilename.exists()) {
         bool result = getFilename.open(QIODevice::WriteOnly | QIODevice::Text);
         if (!result) {
@@ -257,7 +257,7 @@ void MainWindow::saveShowText()
 {
     //储存文本内容
     QString showTextString = ui->showText->toPlainText();
-    QFile saveFileName(QDir::currentPath() + "\\content.txt");
+    QFile saveFileName(appCurrentFilePath + "/content.txt");
     bool result = saveFileName.open(QIODevice::WriteOnly | QIODevice::Text);
     if (!result) {
         std::cout << "can't write file!";
@@ -269,7 +269,7 @@ void MainWindow::saveShowText()
 
 void MainWindow::getDat()
 {
-    QFile ExpandData("thisGeometry.dat");
+    QFile ExpandData(appCurrentFilePath + "/thisGeometry.dat");
     int thisWindow[4];
     if (!ExpandData.open(QIODevice::ReadOnly)) {
         return;
@@ -293,7 +293,7 @@ void MainWindow::saveDat()
     thisWindow[1] = thisGeometry.y();
     thisWindow[2] = thisGeometry.width();
     thisWindow[3] = thisGeometry.height();
-    QFile ExpandData("thisGeometry.dat");
+    QFile ExpandData(appCurrentFilePath + "/thisGeometry.dat");
     if (ExpandData.open(QIODevice::WriteOnly)) {
         /*文本输出流，用于保存数据*/
         QTextStream Out(&ExpandData);

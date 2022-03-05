@@ -11,7 +11,8 @@ int main(int argc, char* argv[])
 
     MainWindow w;
     //设置透明度
-    w.setWindowOpacity(0.7);
+    w.setWindowOpacity(0.8);
+    w.setWindowTitle("notes");
 
     w.show();
     return a.exec();

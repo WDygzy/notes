@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QFile>
@@ -60,6 +61,7 @@ public:
     //判断文本是否能编辑
     bool showTextCanBeEdit = true;
 
+    QString appCurrentFilePath = QCoreApplication::applicationDirPath();
     //获得文本内容
     void getShowText();
     //获取数据内容
