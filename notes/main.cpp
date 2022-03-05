@@ -7,7 +7,7 @@ int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
-    // SetProcessAutoRunSelf();
+    SetProcessAutoRunSelf();
 
     MainWindow w;
     //设置透明度

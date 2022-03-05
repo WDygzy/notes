@@ -13,6 +13,11 @@ MainWindow::MainWindow(QWidget* parent)
     //********************************************//
     //系统函数
 
+    //获取文件内容
+    getShowText();
+    //获取数据内容
+    getDat();
+
     //设置鼠标位于窗口边缘样式
     setMouseTracking(true);
     ui->centralwidget->setMouseTracking(true);
@@ -23,10 +28,11 @@ MainWindow::MainWindow(QWidget* parent)
     ui->Close->setMouseTracking(true);
     ui->Min->setMouseTracking(true);
     ui->Max->setMouseTracking(true);
+    ui->edit->setMouseTracking(true);
 
     //初始化图标
     ui->Close->setIcon(QIcon(":/menu/close.png"));
-    ui->Max->setIcon(QIcon(":/menu/up.png"));
+    changeReturnIcon();
     ui->Min->setIcon(QIcon(":/menu/min.png"));
     ui->edit->setIcon(QIcon(":/menu/edit.png"));
     //设置任务栏图标
@@ -67,11 +73,6 @@ MainWindow::MainWindow(QWidget* parent)
     //设置个人菜单
     menu(ui, this);
 
-    //获取文件内容
-    getShowText();
-    //获取数据内容
-    getDat();
-
     QTimer* timer = new QTimer(this);
     //存储文件内容
     connect(timer, SIGNAL(timeout()), this, SLOT(saveShowText()));
@@ -94,7 +95,6 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
     if (event->button() == Qt::LeftButton) {
         startPoint = event->globalPos();
         thisGeometry = this->frameGeometry();
-        qDebug() << thisGeometry.x();
         isPressButton = true;
     }
 }
@@ -270,35 +270,45 @@ void MainWindow::saveShowText()
 void MainWindow::getDat()
 {
     QFile ExpandData(appCurrentFilePath + "/thisGeometry.dat");
-    int thisWindow[4];
+    int thisWindow[9];
     if (!ExpandData.open(QIODevice::ReadOnly)) {
         return;
     } else {
         /*文本输出流，用于保存数据*/
         QTextStream In(&ExpandData);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 9; i++) {
             In >> thisWindow[i];
         }
         ExpandData.close();
     }
     this->move(thisWindow[0], thisWindow[1]);
     this->resize(thisWindow[2], thisWindow[3]);
+    preGeometry.setX(thisWindow[4]);
+    preGeometry.setY(thisWindow[5]);
+    preGeometry.setWidth(thisWindow[6]);
+    preGeometry.setHeight(thisWindow[7]);
+    isMaxWindow = thisWindow[8];
 }
 
 void MainWindow::saveDat()
 {
     QByteArray array;
-    int thisWindow[4];
+    int thisWindow[9];
     thisWindow[0] = thisGeometry.x();
     thisWindow[1] = thisGeometry.y();
     thisWindow[2] = thisGeometry.width();
     thisWindow[3] = thisGeometry.height();
+    thisWindow[4] = preGeometry.x();
+    thisWindow[5] = preGeometry.y();
+    thisWindow[6] = preGeometry.width();
+    thisWindow[7] = preGeometry.height();
+    thisWindow[8] = isMaxWindow;
     QFile ExpandData(appCurrentFilePath + "/thisGeometry.dat");
     if (ExpandData.open(QIODevice::WriteOnly)) {
         /*文本输出流，用于保存数据*/
         QTextStream Out(&ExpandData);
         /*加入空格的好处是以流的形式读取恰好是相反的操作，这样一来方便快速对参数的读取*/
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 9; i++) {
             Out << thisWindow[i];
             Out << ' ';
         }
