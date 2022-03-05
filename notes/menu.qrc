@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/menu">
+        <file>close.png</file>
+        <file>down.png</file>
+        <file>min.png</file>
+        <file>up.png</file>
+        <file>ico.png</file>
+        <file>cantedit.png</file>
+        <file>edit.png</file>
+    </qresource>
+</RCC>
